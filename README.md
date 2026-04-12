@@ -11,7 +11,6 @@ This CLI client was built using bun and typescript that uses Github’s Rest API
 - Configuration via environment variables or config files
 - Output Formatting Options
 
-# =========================================================================================================================================
 
 ## Supported Commands and Flags
 
@@ -36,15 +35,12 @@ bun run src/index.ts pulls nodejs node open 1 5 --table
 bun run src/index.ts search "react cli" 1 5 stars --table
 
 
-# =========================================================================================================================================
 
 ## Authentication 
 if needed just add your token
 
 "dollar sign"env:GITHUB_TOKEN="your_token_here"
 
-
-# =========================================================================================================================================
 
   ## Usage Examples:
 
@@ -68,7 +64,6 @@ if needed just add your token
   bun run src/index.ts repos octocat --table
 
 
-# =========================================================================================================================================
 
 ## To install dependencies:
 
