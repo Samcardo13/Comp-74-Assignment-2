@@ -1,0 +1,13 @@
+{
+  "name": "assignment2-api",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "^1.3.11",
+    "@types/node": "^25.6.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "private": true
+}
