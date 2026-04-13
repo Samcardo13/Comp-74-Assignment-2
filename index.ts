@@ -9,6 +9,7 @@ import "dotenv/config";
 const BASE_URL = "https://api.github.com";
 const TOKEN = process.env.GITHUB_TOKEN;
 
+let cacheData: Record<string, any> = {};
 
 // Function to fetch data from GitHub API with caching feature.
 async function fetchData(url: string): Promise<any> {
@@ -18,17 +19,17 @@ async function fetchData(url: string): Promise<any> {
     // Check if cache file exists and if it contains a valid response for the requested URL
     try {
         if (fs.existsSync(filePath)) {
-            const cacheContent = fs.readFileSync(filePath, 'utf-8');
-            const cacheData = JSON.parse(cacheContent);
-            if (cacheData.response && cacheData.response.url === url) {
-                console.log('Cache hit for URL:', url);
-                return cacheData.response;
+            const cacheContent = fs.readFileSync(filePath, 'utf-8').trim();
+
+            if (cacheContent) {
+                cacheData = JSON.parse(cacheContent);
             } else {
-                console.log('Cache miss for URL:', url);
+                console.log("Cache file is empty, initializing new cache.");
             }
         }
-    } catch (err) {
-        console.error('Error reading cache file:', err);
+    } catch (err: any) {
+        console.log("Error reading cache file, resetting cache:", err.message);
+        cacheData = {};
     }
 
     try {
