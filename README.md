@@ -34,7 +34,9 @@ Flags:
   --state <state> : Filter issues by state (open, closed, all)
   
   --page <number> (only for User Repos, issues, pulls, search)  must use both flags 
-  --per_page <number> (only for User Repos, issues, pulls, search) 
+  --per_page <number> (only for User Repos, issues, pulls, search)
+
+  --help or --h : for help with the commands
   
 ```
 
@@ -82,6 +84,7 @@ Flags:
   bun run index.ts repos octocat --table
   bun run src/index.ts repos octocat --page 1 --per_page 5
   bun run index.ts issues octocat Hello-World --state open
+  bun run index.ts --help
   ```
 
 ## To install dependencies:
