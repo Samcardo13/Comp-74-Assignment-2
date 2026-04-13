@@ -24,6 +24,7 @@ Commands:
 - issues <owner> <repo> <state>
 - pulls <owner> <repo>
 - repos <username> < --page <number> > < --per_page <number> >
+
 ```
 
 Flags:
@@ -32,50 +33,56 @@ Flags:
   --table : Display output in a table format
   --state <state> : Filter issues by state (open, closed, all)
   
+  --page <number> (only for User Repos, issues, pulls, search)  must use both flags 
+  --per_page <number> (only for User Repos, issues, pulls, search) 
+  
 ```
-
-## Authentication 
-if needed just add your token
-
-"dollar sign"env:GITHUB_TOKEN="your_token_here"
-
-  ## Usage Examples:
-
-  Gets User's Infomation
-  ``` typescript
-  bun run src/index.ts user octocat
-  ```
-
-  List Repositories by a user with pagination 
-  ``` typescript
-  bun run src/index.ts repos octocat 1 5
-  ```
-
-  Gets Repositories Details
-  ``` typescript
-  bun run src/index.ts repo octocat Hello-World
-  ```
-
-  Lists issues in a User's repository
-  ``` typescript
-  bun run src/index.ts issues octocat Hello-World open
-  ```
-
-  Searchs inside a repository 
-  ``` typescript
-  bun run src/index.ts search bun 1 5 stars
-  ```
-
-  # Examples of the flags in use
-  ``` typescript
-  bun run src/index.ts repos octocat --pretty 
-  bun run src/index.ts repos octocat --table
-  ```
 
   # To input Your Github API Token 
   - Go To token.env 
   - Replace your_token_here with your token
   - Then run commands with your token inside
+
+
+  ## Usage Examples:
+
+  Gets User's Infomation
+  ``` typescript
+  bun run index.ts user octocat
+  ```
+
+  List Repositories from a user 
+  ``` typescript
+  bun run index.ts repos octocat
+  ```
+
+  Gets Repositories Details
+  ``` typescript
+  bun run index.ts repo octocat Hello-World
+  ```
+
+  Lists issues in a User's repository
+  ``` typescript
+  bun run index.ts issues octocat Hello-World
+  ```
+
+  Searchs inside a repository 
+  ``` typescript
+  bun run index.ts searchRepos bun
+  ```
+
+  Pulls 
+  ``` typescript
+  bun run index.ts pulls octocat Hello-World
+  ```
+
+  # Examples of the flags in use
+  ``` typescript
+  bun run index.ts repos octocat --pretty 
+  bun run index.ts repos octocat --table
+  bun run src/index.ts repos octocat --page 1 --per_page 5
+  bun run index.ts issues octocat Hello-World --state open
+  ```
 
 ## To install dependencies:
 
