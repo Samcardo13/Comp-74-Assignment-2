@@ -55,6 +55,12 @@ async function fetchData(url: string): Promise<any> {
         })
 
         if (!response.ok) {
+            if (response.status === 404) {
+                throw new Error("Resource not found (check username/repo)");
+            }
+            if (response.status === 403) {
+                throw new Error("Rate limit exceeded or access denied");
+            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -89,24 +95,61 @@ async function main() {
     // Format Flags
     const pretty = args.includes('--pretty');
     const table = args.includes('--table');
+    const help = args.includes('--help') || args.includes('-h');
+
+    if (help) {
+        console.log(
+            `
+            GitHub CLI Tool - Commands and Usage:
+            Commands:
+            - user <username> : Fetch user information by username
+            - repo <owner> <repo> : Fetch repository information by owner and repo name
+            - searchRepos <query> : Search repositories by query string, sorted by stars in descending order
+            - issues <owner> <repo> <state> : Issues filtered by state: open, closed, or all
+            - pulls <owner> <repo> : Fetch pull requests for a repository
+            - repos <username> : List user repositories
+            Flags:
+            --pretty : Pretty print the JSON output
+            --table : Display output in a table format
+            --state <state> : Filter issues by state (open, closed, all)
+            Example usage:
+            - bun run index.ts user octocat
+            `
+        );
+        return;
+    }
 
 
     try {
         switch (command) {
             // Fetch user information by username
             case "user":
+                if (!parm1) {
+                    console.error("Username is required for 'user' command");
+                    return;
+                }
                 const userData = await fetchData(`${BASE_URL}/users/${parm1}`);
                 printData(userData, pretty, table);
                 break;
 
             // Fetch repository information by owner and repo name
             case "repo":
+
+                if (!parm1 || !parm2) {
+                    console.error("Owner and repository name are required for 'repo' command");
+                    return;
+                }
                 const repoData = await fetchData(`${BASE_URL}/repos/${parm1}/${parm2}`);
                 printData(repoData, pretty, table);
                 break;
 
             // Search repositories by query string, sorted by stars in descending order and mapping results for table display if --table flag is used
             case "searchRepos": {
+
+                if (args.length < 2) {
+                    console.error("Search query is required for 'searchRepos' command");
+                    return;
+                }
                 const query = args.slice(1).join(" ");
                 const searchData = await fetchData(
                     `${BASE_URL}/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc`
@@ -146,6 +189,12 @@ async function main() {
 
             // Issues filtered by state: open, closed, or all
             case "issues": {
+
+                if (!parm1 || !parm2) {
+                    console.error("Owner and repository name are required for 'issues' command");
+                    return;
+                }
+
                 if (args.includes('--state')) {
                     const state = args[4];
                     const statefiltered = await fetchData(
@@ -194,6 +243,10 @@ async function main() {
 
             // Fetch pull requests for a repository
             case "pulls":
+                if (!parm1 || !parm2) {
+                    console.error("Owner and repository name are required for 'pulls' command");
+                    return;
+                }
                 const pullsData = await fetchData(`${BASE_URL}/repos/${parm1}/${parm2}/pulls`);
 
                 if (args.includes("--table")) {
@@ -226,6 +279,11 @@ async function main() {
 
             // List user repositories and checks for pagination parameters and also for table and puts the data in map format for table display if --table flag is used
             case "repos": {
+
+                if (!parm1) {
+                    console.error("Username is required for 'repos' command");
+                    return;
+                }
                 const user = args[1];
                 if (args.includes("--page") && args.includes("--per_page")) {
                     const pageIndex = args.indexOf("--page");
@@ -279,6 +337,9 @@ async function main() {
 
                     Example usage:
                     - bun run index.ts user octocat
+
+                    if Help is needed, use --help or -h flag
+                    
                     `
                 );
         }
