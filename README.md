@@ -72,6 +72,11 @@ if needed just add your token
   bun run src/index.ts repos octocat --table
   ```
 
+  # To input Your Github API Token 
+  - Go To token.env 
+  - Replace your_token_here with your token
+  - Then run commands with your token inside
+
 ## To install dependencies:
 
 ```bash
