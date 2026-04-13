@@ -3,6 +3,7 @@
 //imports
 import * as fs from 'fs';
 import * as path from 'path';
+import "dotenv/config";
 
 // Constants
 const BASE_URL = "https://api.github.com";
@@ -121,6 +122,19 @@ async function main() {
                     }));
 
                     printData(items, pretty, table);
+                    return;
+
+                } else if (args.includes("--page") && args.includes("--per_page")) {
+                    const pageIndex = args.indexOf("--page");
+                    const perPageIndex = args.indexOf("--per_page");
+
+                    const page = Number(args[pageIndex + 1]);
+                    const per_page = Number(args[perPageIndex + 1]);
+
+                    const paginatedData = await fetchData(
+                        `${BASE_URL}/search/repositories?q=${encodeURIComponent(query)}&sort=stars&order=desc&page=${page}&per_page=${per_page}`
+                    );
+                    printData(paginatedData, pretty, table);
                     return;
 
                 } else {
