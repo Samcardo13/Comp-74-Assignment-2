@@ -18,18 +18,20 @@ This CLI client was built using bun and typescript that uses Github’s Rest API
 
 Commands:
 ```
-  user <username>
-  repos <username> [page] [per_page]
-  repo <owner> <repo>
-  issues <owner> <repo> [state] [page] [per_page]
-  pulls <owner> <repo> [state] [page] [per_page]
-  search <query> [page] [per_page] [sort]
+- user <username>
+- repo <owner> <repo>
+- searchRepos <query>
+- issues <owner> <repo> <state>
+- pulls <owner> <repo>
+- repos <username> < --page <number> > < --per_page <number> >
 ```
 
 Flags:
 ```
-  --pretty
-  --table
+  --pretty : Pretty print the JSON output
+  --table : Display output in a table format
+  --state <state> : Filter issues by state (open, closed, all)
+  
 ```
 
 ## Authentication 
